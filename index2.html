@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Account Head Solver</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 30px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f3f3f3;
+            position: sticky;
+            top: 0;
+        }
+        tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+        .filter-input {
+            width: 98%;
+            padding: 5px 6px;
+            box-sizing: border-box;
+            margin-bottom: 2px;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Account Head Solver</h2>
+
+<table id="jsonTable">
+    <thead></thead>
+    <tbody></tbody>
+</table>
+
+<script>
+// Paste your JSON data here
+        const data = {
+            "output": [
+                {
+                    "Bill Date": "1/5/2025",
+                    "Account": "Vegetables and fruits purchases",
+                    "Status": "Correct",
+                    "Vendor Name": "Mohd Abdul Hameed",
+                    "Suggested Account": "-",
+                    "Item Name": "L TOMATO",
+                    "Comment": "Item is correctly classified.",
+                    "Bill Number": 881
+                },
+                {
+                    "Status": "Correct",
+                    "Suggested Account": "-",
+                    "Bill Date": "1/5/2025",
+                    "Account": "Vegetables and fruits purchases",
+                    "Comment": "Item is correctly classified.",
+                    "Item Name": "Pudina",
+                    "Vendor Name": "Mohd Abdul Hameed",
+                    "Bill Number": 881
+                },
+                {
+                    "Account": "Vegetables and fruits purchases",
+                    "Item Name": "L.tomato",
+                    "Comment": "Item is correctly classified.",
+                    "Bill Date": "1/5/2025",
+                    "Vendor Name": "Mohd Abdul Hameed",
+                    "Bill Number": 879,
+                    "Status": "Correct",
+                    "Suggested Account": "-"
+                },
+                {
+                    "Status": "Correct",
+                    "Vendor Name": "Mohd Abdul Hameed",
+                    "Suggested Account": "-",
+                    "Account": "Vegetables and fruits purchases",
+                    "Comment": "Item is correctly classified.",
+                    "Item Name": "carrot",
+                    "Bill Date": "1/5/2025",
+                    "Bill Number": 879
+                },
+                {
+                    "Bill Date": "1/5/2025",
+                    "Suggested Account": "-",
+                    "Item Name": "Beans",
+                    "Comment": "Item is correctly classified.",
+                    "Bill Number": 879,
+                    "Account": "Vegetables and fruits purchases",
+                    "Status": "Correct",
+                    "Vendor Name": "Mohd Abdul Hameed"
+                },
+                {
+                    "Account": "Vegetables and fruits purchases",
+                    "Status": "Correct",
+                    "Bill Number": 879,
+                    "Vendor Name": "Mohd Abdul Hameed",
+                    "Item Name": "H.Mirchi",
+                    "Bill Date": "1/5/2025",
+                    "Suggested Account": "-",
+                    "Comment": "Item is correctly classified."
+                },
+                {
+                    "Account": "Vegetables and fruits purchases",
+                    "Bill Date": "1/5/2025",
+                    "Suggested Account": "-",
+                    "Item Name": "Kaddu",
+                    "Vendor Name": "Mohd Abdul Hameed",
+                    "Bill Number": 879,
+                    "Comment": "Item is correctly classified.",
+                    "Status": "Correct"
+                },
+                {
+                    "Status": "Correct",
+                    "Vendor Name": "Mohd Abdul Hameed",
+                    "Bill Date": "1/5/2025",
+                    "Bill Number": 879,
+                    "Account": "Vegetables and fruits purchases",
+                    "Comment": "Item is correctly classified.",
+                    "Item Name": "Kothmir",
+                    "Suggested Account": "-"
+                },
+                {
+                    "Vendor Name": "Mohd Abdul Hameed",
+                    "Bill Number": 879,
+                    "Status": "Correct",
+                    "Bill Date": "1/5/2025",
+                    "Account": "Vegetables and fruits purchases",
+                    "Suggested Account": "-",
+                    "Comment": "Item is correctly classified.",
+                    "Item Name": "PAPAYA"
+                },
+                {
+                    "Suggested Account": "-",
+                    "Account": "Vegetables and fruits purchases",
+                    "Status": "Correct",
+                    "Bill Number": 879,
+                    "Vendor Name": "Mohd Abdul Hameed",
+                    "Comment": "Item is correctly classified.",
+                    "Item Name": "Garlic",
+                    "Bill Date": "1/5/2025"
+                },
+                {
+                    "Vendor Name": "V.H. Agro Foods Pvt Ltd",
+                    "Item Name": "Baby Corn Peeled",
+                    "Suggested Account": "-",
+                    "Comment": "Item is correctly classified.",
+                    "Account": "Vegetables and fruits purchases",
+                    "Bill Number": "EX/25-26/4325",
+                    "Status": "Correct",
+                    "Bill Date": "1/5/2025"
+                },
+                {
+                    "Bill Number": "EX/25-26/4325",
+                    "Item Name": "Green Peas 1KG",
+                    "Bill Date": "1/5/2025",
+                    "Comment": "Item is correctly classified.",
+                    "Vendor Name": "V.H. Agro Foods Pvt Ltd",
+                    "Account": "Vegetables and fruits purchases",
+                    "Status": "Correct",
+                    "Suggested Account": "-"
+                },
+                {
+                    "Status": "Correct",
+                    "Suggested Account": "-",
+                    "Bill Date": "1/5/2025",
+                    "Account": "Vegetables and fruits purchases",
+                    "Bill Number": "EX/25-26/4325",
+                    "Item Name": "Fresh Mushrooms",
+                    "Vendor Name": "V.H. Agro Foods Pvt Ltd",
+                    "Comment": "Item is correctly classified."
+                },
+                {
+                    "Bill Number": 20545880,
+                    "Suggested Account": "Poultry and meat purchases",
+                    "Bill Date": "2/5/2025",
+                    "Status": "Incorrect",
+                    "Item Name": "With Bone Mutton",
+                    "Comment": "Mutton is a meat product, not a vegetable or fruit.",
+                    "Account": "Vegetables and fruits purchases",
+                    "Vendor Name": "Khaja A1 Mutton Shop"
+                },
+                {
+                    "Status": "Correct",
+                    "Suggested Account": "-",
+                    "Account": "Groceries purchases",
+                    "Comment": "Item is correctly classified.",
+                    "Vendor Name": "Newandram Manghanmal agencies",
+                    "Bill Date": "1/5/2025",
+                    "Bill Number": 415,
+                    "Item Name": "Refined Oil Tin"
+                },
+                {
+                    "Status": "Correct",
+                    "Suggested Account": "-",
+                    "Bill Number": 415,
+                    "Vendor Name": "Newandram Manghanmal agencies",
+                    "Comment": "Item is correctly classified.",
+                    "Account": "Groceries purchases",
+                    "Item Name": "DESSICATED COCONUT POWDER ",
+                    "Bill Date": "1/5/2025"
+                },
+                {
+                    "Suggested Account": "Other admin charges",
+                    "Account": "Groceries purchases",
+                    "Vendor Name": "Sri Venkateshwara Agencies",
+                    "Item Name": "TOOTH PICK FANCY STICK 4 INCH",
+                    "Comment": "Toothpicks are non-food supplies, better classified under admin charges.",
+                    "Bill Number": 211,
+                    "Bill Date": "1/5/2025",
+                    "Status": "Incorrect"
+                },
+                {
+                    "Account": "Groceries purchases",
+                    "Comment": "Item is correctly classified.",
+                    "Bill Number": 776,
+                    "Status": "Correct",
+                    "Vendor Name": "Shree Kesar Trading co",
+                    "Suggested Account": "-",
+                    "Item Name": "IG FLOUR RICE 1KG",
+                    "Bill Date": "1/5/2025"
+                },
+                {
+                    "Comment": "Item is correctly classified.",
+                    "Status": "Correct",
+                    "Account": "Groceries purchases",
+                    "Item Name": "Coconut",
+                    "Suggested Account": "-",
+                    "Bill Number": 1052500,
+                    "Vendor Name": "Raghavendra Coconut",
+                    "Bill Date": "1/5/2025"
+                },
+                {
+                    "Comment": "Item is correctly classified.",
+                    "Item Name": "WHEAT FLOUR MAIDA 50 KG BAG",
+                    "Vendor Name": "Newandram Manghanmal agencies",
+                    "Account": "Groceries purchases",
+                    "Status": "Correct",
+                    "Bill Number": 416,
+                    "Bill Date": "1/5/2025",
+                    "Suggested Account": "-"
+                },
+                {
+                    "Suggested Account": "-",
+                    "Bill Date": "1/5/2025",
+                    "Comment": "Item is correctly classified.",
+                    "Item Name": "Daawat Biryani 26KG",
+                    "Bill Number": 416,
+                    "Vendor Name": "Newandram Manghanmal agencies",
+                    "Account": "Groceries purchases",
+                    "Status": "Correct"
+                },
+                {
+                    "Suggested Account": "-",
+                    "Item Name": "Ulavacharu",
+                    "Comment": "Item is correctly classified.",
+                    "Bill Number": 1027,
+                    "Bill Date": "1/5/2025",
+                    "Status": "Correct",
+                    "Account": "Groceries purchases",
+                    "Vendor Name": "Hassta Enterprises"
+                },
+                {
+                    "Account": "Groceries purchases",
+                    "Vendor Name": "Mohd Abdul Hameed",
+                    "Item Name": "Kariapak",
+                    "Comment": "Kariapak (curry leaves) is a fresh herb, classified with vegetables.",
+                    "Bill Number": 879,
+                    "Status": "Incorrect",
+                    "Bill Date": "1/5/2025",
+                    "Suggested Account": "Vegetables and fruits purchases"
+                },
+                {
+                    "Vendor Name": "Mohd Abdul Hameed",
+                    "Bill Date": "1/5/2025",
+                    "Suggested Account": "Vegetables and fruits purchases",
+                    "Status": "Incorrect",
+                    "Account": "Groceries purchases",
+                    "Comment": "Pudina (mint) is a fresh herb, classified with vegetables.",
+                    "Item Name": "Pudina",
+                    "Bill Number": 879
+                },
+                {
+                    "Bill Number": 879,
+                    "Bill Date": "1/5/2025",
+                    "Account": "Groceries purchases",
+                    "Item Name": "Cabbage",
+                    "Vendor Name": "Mohd Abdul Hameed",
+                    "Comment": "Cabbage is a vegetable.",
+                    "Suggested Account": "Vegetables and fruits purchases",
+                    "Status": "Incorrect"
+                },
+                {
+                    "Item Name": "Capsicum",
+                    "Status": "Incorrect",
+                    "Suggested Account": "Vegetables and fruits purchases",
+                    "Comment": "Capsicum is a vegetable.",
+                    "Account": "Groceries purchases",
+                    "Bill Number": 879,
+                    "Vendor Name": "Mohd Abdul Hameed",
+                    "Bill Date": "1/5/2025"
+                },
+                {
+                    "Bill Number": 879,
+                    "Item Name": "Allam",
+                    "Vendor Name": "Mohd Abdul Hameed",
+                    "Comment": "Allam (ginger) is a vegetable.",
+                    "Bill Date": "1/5/2025",
+                    "Suggested Account": "Vegetables and fruits purchases",
+                    "Account": "Groceries purchases",
+                    "Status": "Incorrect"
+                },
+                {
+                    "Vendor Name": "Mohd Abdul Hameed",
+                    "Suggested Account": "Vegetables and fruits purchases",
+                    "Bill Date": "1/5/2025",
+                    "Status": "Incorrect",
+                    "Bill Number": 879,
+                    "Item Name": "Birakaya",
+                    "Account": "Groceries purchases",
+                    "Comment": "Birakaya (ridge gourd) is a vegetable."
+                },
+                {
+                    "Status": "Incorrect",
+                    "Suggested Account": "Vegetables and fruits purchases",
+                    "Account": "Groceries purchases",
+                    "Comment": "Aalu (potato) is a vegetable.",
+                    "Vendor Name": "Mohd Abdul Hameed",
+                    "Bill Date": "1/5/2025",
+                    "Item Name": "Aalu",
+                    "Bill Number": 879
+                },
+                {
+                    "Bill Number": 775,
+                    "Suggested Account": "-",
+                    "Comment": "Item is correctly classified.",
+                    "Item Name": "UNITY BASMATI 30KG",
+                    "Bill Date": "1/5/2025",
+                    "Status": "Correct",
+                    "Account": "Groceries purchases",
+                    "Vendor Name": "Shree Kesar Trading co"
+                },
+                {
+                    "Bill Number": 775,
+                    "Comment": "Item is correctly classified.",
+                    "Status": "Correct",
+                    "Item Name": "IG JEERA RICE 30 KG",
+                    "Bill Date": "1/5/2025",
+                    "Account": "Groceries purchases",
+                    "Suggested Account": "-",
+                    "Vendor Name": "Shree Kesar Trading co"
+                },
+                {
+                    "Suggested Account": "-",
+                    "Vendor Name": "Newandram Manghanmal agencies",
+                    "Bill Date": "2/5/2025",
+                    "Status": "Correct",
+                    "Bill Number": 427,
+                    "Account": "Groceries purchases",
+                    "Comment": "Item is correctly classified.",
+                    "Item Name": "Refined Oil Tin"
+                },
+                {
+                    "Vendor Name": "Newandram Manghanmal agencies",
+                    "Status": "Correct",
+                    "Suggested Account": "-",
+                    "Bill Number": 427,
+                    "Account": "Groceries purchases",
+                    "Comment": "Item is correctly classified.",
+                    "Item Name": "CASHEW NUTS WHOLE/KAJU FULL (PREMIUM)",
+                    "Bill Date": "2/5/2025"
+                },
+                {
+                    "Suggested Account": "-",
+                    "Status": "Correct",
+                    "Comment": "Item is correctly classified.",
+                    "Item Name": "CASHEW NUTTS (KAJU)",
+                    "Vendor Name": "Newandram Manghanmal agencies",
+                    "Account": "Groceries purchases",
+                    "Bill Date": "2/5/2025",
+                    "Bill Number": 427
+                },
+                {
+                    "Account": "Groceries purchases",
+                    "Bill Date": "2/5/2025",
+                    "Vendor Name": "Newandram Manghanmal agencies",
+                    "Item Name": "BADAM ALMONDS",
+                    "Comment": "Item is correctly classified.",
+                    "Status": "Correct",
+                    "Suggested Account": "-",
+                    "Bill Number": 427
+                },
+                {
+                    "Item Name": "LEG BONELESS",
+                    "Comment": "This is a poultry product.",
+                    "Bill Number": "25/FATHSO4768",
+                    "Bill Date": "2/5/2025",
+                    "Vendor Name": "Sneha Farms Private Limited",
+                    "Status": "Incorrect",
+                    "Account": "Groceries purchases",
+                    "Suggested Account": "Poultry and meat purchases"
+                },
+                {
+                    "Suggested Account": "-",
+                    "Vendor Name": "Hassta Enterprises",
+                    "Item Name": "Ulavacharu",
+                    "Comment": "Item is correctly classified.",
+                    "Status": "Correct",
+                    "Bill Date": "2/5/2025",
+                    "Account": "Groceries purchases",
+                    "Bill Number": 1067
+                },
+                {
+                    "Vendor Name": "Sri Venkateshwara Agencies",
+                    "Item Name": "Garbage Bags (35*45)",
+                    "Comment": "Item is correctly classified.",
+                    "Bill Number": 211,
+                    "Account": "Cleaning and housekeeping",
+                    "Bill Date": "1/5/2025",
+                    "Suggested Account": "-",
+                    "Status": "Correct"
+                },
+                {
+                    "Suggested Account": "-",
+                    "Account": "Cleaning and housekeeping",
+                    "Comment": "Item is correctly classified.",
+                    "Bill Date": "1/5/2025",
+                    "Bill Number": 214,
+                    "Item Name": "Airlaid Npk 16*16",
+                    "Status": "Correct",
+                    "Vendor Name": "Sri Venkateshwara Agencies"
+                },
+                {
+                    "Vendor Name": "Sri Venkateshwara Agencies",
+                    "Account": "Cleaning and housekeeping",
+                    "Suggested Account": "-",
+                    "Comment": "Item is correctly classified.",
+                    "Item Name": "Garbage Bags (35*45)",
+                    "Bill Number": 218,
+                    "Status": "Correct",
+                    "Bill Date": "2/5/2025"
+                },
+                {
+                    "Account": "Procurement expense",
+                    "Comment": "Item is correctly classified.",
+                    "Suggested Account": "-",
+                    "Status": "Correct",
+                    "Item Name": "CGST",
+                    "Vendor Name": "Shree Kesar Trading co",
+                    "Bill Date": "1/5/2025",
+                    "Bill Number": 776
+                },
+                {
+                    "Vendor Name": "Shree Kesar Trading co",
+                    "Suggested Account": "-",
+                    "Account": "Procurement expense",
+                    "Bill Date": "1/5/2025",
+                    "Status": "Correct",
+                    "Item Name": "SGST",
+                    "Bill Number": 776,
+                    "Comment": "Item is correctly classified."
+                },
+                {
+                    "Bill Number": 214,
+                    "Item Name": "CGST",
+                    "Bill Date": "1/5/2025",
+                    "Comment": "Item is correctly classified.",
+                    "Account": "Procurement expense",
+                    "Vendor Name": "Sri Venkateshwara Agencies",
+                    "Suggested Account": "-",
+                    "Status": "Correct"
+                },
+                {
+                    "Bill Date": "1/5/2025",
+                    "Account": "Procurement expense",
+                    "Item Name": "SGST",
+                    "Status": "Correct",
+                    "Vendor Name": "Sri Venkateshwara Agencies",
+                    "Bill Number": 214,
+                    "Suggested Account": "-",
+                    "Comment": "Item is correctly classified."
+                },
+                {
+                    "Status": "Incorrect",
+                    "Comment": "Bajra (pearl millet) is a grocery item, not a tax or expense.",
+                    "Suggested Account": "Groceries purchases",
+                    "Item Name": "Bajra",
+                    "Bill Number": 416,
+                    "Bill Date": "1/5/2025",
+                    "Account": "Procurement expense",
+                    "Vendor Name": "Newandram Manghanmal agencies"
+                },
+                {
+                    "Account": "Procurement expense",
+                    "Bill Date": "1/5/2025",
+                    "Suggested Account": "-",
+                    "Bill Number": 1027,
+                    "Comment": "Item is correctly classified.",
+                    "Vendor Name": "Hassta Enterprises",
+                    "Status": "Correct",
+                    "Item Name": "CGST"
+                },
+                {
+                    "Bill Number": 1027,
+                    "Comment": "Item is correctly classified.",
+                    "Account": "Procurement expense",
+                    "Vendor Name": "Hassta Enterprises",
+                    "Suggested Account": "-",
+                    "Bill Date": "1/5/2025",
+                    "Item Name": "SGST",
+                    "Status": "Correct"
+                },
+                {
+                    "Bill Number": 674,
+                    "Item Name": "CGST",
+                    "Bill Date": "1/5/2025",
+                    "Vendor Name": "BKN Enterprises",
+                    "Comment": "Item is correctly classified.",
+                    "Status": "Correct",
+                    "Suggested Account": "-",
+                    "Account": "Procurement expense"
+                },
+                {
+                    "Status": "Correct",
+                    "Account": "Procurement expense",
+                    "Bill Date": "1/5/2025",
+                    "Vendor Name": "BKN Enterprises",
+                    "Bill Number": 674,
+                    "Item Name": "SGST",
+                    "Comment": "Item is correctly classified.",
+                    "Suggested Account": "-"
+                },
+                {
+                    "Comment": "Item is correctly classified.",
+                    "Item Name": "CGST",
+                    "Status": "Correct",
+                    "Bill Number": "104/25-26",
+                    "Suggested Account": "-",
+                    "Bill Date": "2/5/2025",
+                    "Vendor Name": "Upadrasta daily specialities limited",
+                    "Account": "Procurement expense"
+                },
+                {
+                    "Status": "Correct",
+                    "Bill Number": "104/25-26",
+                    "Suggested Account": "-",
+                    "Item Name": "SGST",
+                    "Bill Date": "2/5/2025",
+                    "Account": "Procurement expense",
+                    "Comment": "Item is correctly classified.",
+                    "Vendor Name": "Upadrasta daily specialities limited"
+                },
+                {
+                    "Vendor Name": "Newandram Manghanmal agencies",
+                    "Bill Number": 427,
+                    "Status": "Correct",
+                    "Item Name": "CGST",
+                    "Suggested Account": "-",
+                    "Bill Date": "2/5/2025",
+                    "Comment": "Item is correctly classified.",
+                    "Account": "Procurement expense"
+                },
+                {
+                    "Bill Date": "2/5/2025",
+                    "Status": "Correct",
+                    "Vendor Name": "Newandram Manghanmal agencies",
+                    "Account": "Procurement expense",
+                    "Bill Number": 427,
+                    "Suggested Account": "-",
+                    "Item Name": "SGST",
+                    "Comment": "Item is correctly classified."
+                },
+                {
+                    "Item Name": "CGST",
+                    "Bill Number": 1067,
+                    "Account": "Procurement expense",
+                    "Comment": "Item is correctly classified.",
+                    "Bill Date": "2/5/2025",
+                    "Suggested Account": "-",
+                    "Vendor Name": "Hassta Enterprises",
+                    "Status": "Correct"
+                },
+                {
+                    "Bill Number": 1067,
+                    "Item Name": "SGST",
+                    "Account": "Procurement expense",
+                    "Suggested Account": "-",
+                    "Vendor Name": "Hassta Enterprises",
+                    "Comment": "Item is correctly classified.",
+                    "Bill Date": "2/5/2025",
+                    "Status": "Correct"
+                },
+                {
+                    "Status": "Correct",
+                    "Item Name": "Cling Flim 100mts",
+                    "Bill Date": "1/5/2025",
+                    "Comment": "Item is correctly classified.",
+                    "Account": "Packing material",
+                    "Bill Number": 214,
+                    "Suggested Account": "-",
+                    "Vendor Name": "Sri Venkateshwara Agencies"
+                },
+                {
+                    "Status": "Correct",
+                    "Vendor Name": "Ratna Agencies",
+                    "Bill Number": 2068,
+                    "Bill Date": "1/5/2025",
+                    "Item Name": "19 kg commercial cylinder",
+                    "Comment": "Item is correctly classified.",
+                    "Account": "Kitchen gas, water and electricity",
+                    "Suggested Account": "-"
+                },
+                {
+                    "Account": "Kitchen gas, water and electricity",
+                    "Item Name": "19kg Commercial Cylinders",
+                    "Comment": "Item is correctly classified.",
+                    "Bill Date": "1/5/2025",
+                    "Suggested Account": "-",
+                    "Status": "Correct",
+                    "Vendor Name": "Ratna Agencies",
+                    "Bill Number": 2070
+                },
+                {
+                    "Comment": "Item is correctly classified.",
+                    "Bill Number": "25/FATHSO4574",
+                    "Status": "Correct",
+                    "Item Name": "WHOLE BIRD WITHOUT SKIN",
+                    "Suggested Account": "-",
+                    "Account": "Poultry and meat purchases",
+                    "Vendor Name": "Sneha Farms Private Limited",
+                    "Bill Date": "1/5/2025"
+                },
+                {
+                    "Suggested Account": "-",
+                    "Bill Date": "1/5/2025",
+                    "Account": "Poultry and meat purchases",
+                    "Item Name": "Tandoori Bird without skin",
+                    "Bill Number": "25/FATHSO4574",
+                    "Status": "Correct",
+                    "Comment": "Item is correctly classified.",
+                    "Vendor Name": "Sneha Farms Private Limited"
+                },
+                {
+                    "Vendor Name": "Sneha Farms Private Limited",
+                    "Suggested Account": "-",
+                    "Item Name": "wings",
+                    "Comment": "Item is correctly classified.",
+                    "Status": "Correct",
+                    "Account": "Poultry and meat purchases",
+                    "Bill Number": "25/FATHSO4574",
+                    "Bill Date": "1/5/2025"
+                },
+                {
+                    "Bill Number": "25/FATHSO4574",
+                    "Vendor Name": "Sneha Farms Private Limited",
+                    "Suggested Account": "-",
+                    "Bill Date": "1/5/2025",
+                    "Item Name": "KEEMA",
+                    "Status": "Correct",
+                    "Comment": "Item is correctly classified.",
+                    "Account": "Poultry and meat purchases"
+                },
+                {
+                    "Status": "Correct",
+                    "Vendor Name": "Khaja A1 Mutton Shop",
+                    "Bill Number": 10528540,
+                    "Item Name": "Boneless mutton",
+                    "Comment": "Item is correctly classified.",
+                    "Account": "Poultry and meat purchases",
+                    "Bill Date": "1/5/2025",
+                    "Suggested Account": "-"
+                },
+                {
+                    "Bill Number": 10528540,
+                    "Item Name": "With Bone Mutton",
+                    "Bill Date": "1/5/2025",
+                    "Suggested Account": "-",
+                    "Status": "Correct",
+                    "Account": "Poultry and meat purchases",
+                    "Comment": "Item is correctly classified.",
+                    "Vendor Name": "Khaja A1 Mutton Shop"
+                },
+                {
+                    "Item Name": "Kheema Mutton",
+                    "Account": "Poultry and meat purchases",
+                    "Bill Date": "1/5/2025",
+                    "Vendor Name": "Khaja A1 Mutton Shop",
+                    "Bill Number": 10528540,
+                    "Comment": "Item is correctly classified.",
+                    "Status": "Correct",
+                    "Suggested Account": "-"
+                },
+                {
+                    "Status": "Correct",
+                    "Bill Number": 10528540,
+                    "Comment": "Item is correctly classified.",
+                    "Suggested Account": "-",
+                    "Item Name": "Leg Mutton (paya)",
+                    "Account": "Poultry and meat purchases",
+                    "Vendor Name": "Khaja A1 Mutton Shop",
+                    "Bill Date": "1/5/2025"
+                },
+                {
+                    "Bill Number": 879,
+                    "Account": "Poultry and meat purchases",
+                    "Item Name": "Peeled Garlic",
+                    "Comment": "Garlic is a vegetable.",
+                    "Vendor Name": "Mohd Abdul Hameed",
+                    "Bill Date": "1/5/2025",
+                    "Status": "Incorrect",
+                    "Suggested Account": "Vegetables and fruits purchases"
+                },
+                {
+                    "Item Name": "LEMON",
+                    "Vendor Name": "Mohd Abdul Hameed",
+                    "Account": "Poultry and meat purchases",
+                    "Comment": "Lemon is a fruit.",
+                    "Bill Number": 879,
+                    "Suggested Account": "Vegetables and fruits purchases",
+                    "Bill Date": "1/5/2025",
+                    "Status": "Incorrect"
+                },
+                {
+                    "Bill Date": "1/5/2025",
+                    "Status": "Incorrect",
+                    "Comment": "Watermelon is a fruit.",
+                    "Suggested Account": "Vegetables and fruits purchases",
+                    "Account": "Poultry and meat purchases",
+                    "Vendor Name": "Mohd Abdul Hameed",
+                    "Bill Number": 879,
+                    "Item Name": "water melon"
+                },
+                {
+                    "Comment": "Pineapple is a fruit.",
+                    "Bill Number": 879,
+                    "Status": "Incorrect",
+                    "Item Name": "Pine Apple",
+                    "Bill Date": "1/5/2025",
+                    "Vendor Name": "Mohd Abdul Hameed",
+                    "Account": "Poultry and meat purchases",
+                    "Suggested Account": "Vegetables and fruits purchases"
+                },
+                {
+                    "Bill Number": "MKD7-44003",
+                    "Status": "Correct",
+                    "Comment": "Item is correctly classified.",
+                    "Vendor Name": "COUNTRY CHICKEN CO",
+                    "Suggested Account": "-",
+                    "Item Name": "CLASSIC CC WITH SKIN",
+                    "Account": "Poultry and meat purchases",
+                    "Bill Date": "2/5/2025"
+                },
+                {
+                    "Suggested Account": "-",
+                    "Vendor Name": "COUNTRY CHICKEN CO",
+                    "Status": "Correct",
+                    "Comment": "Item is correctly classified.",
+                    "Item Name": "SKINLESS",
+                    "Account": "Poultry and meat purchases",
+                    "Bill Number": "MKD7-44003",
+                    "Bill Date": "2/5/2025"
+                },
+                {
+                    "Bill Date": "2/5/2025",
+                    "Status": "Correct",
+                    "Account": "Poultry and meat purchases",
+                    "Bill Number": "25/FATHSO4768",
+                    "Suggested Account": "-",
+                    "Vendor Name": "Sneha Farms Private Limited",
+                    "Comment": "Item is correctly classified.",
+                    "Item Name": "WHOLE BIRD WITHOUT SKIN"
+                },
+                {
+                    "Account": "Poultry and meat purchases",
+                    "Item Name": "Tandoori Bird without skin",
+                    "Suggested Account": "-",
+                    "Status": "Correct",
+                    "Bill Date": "2/5/2025",
+                    "Comment": "Item is correctly classified.",
+                    "Bill Number": "25/FATHSO4768",
+                    "Vendor Name": "Sneha Farms Private Limited"
+                },
+                {
+                    "Comment": "Item is correctly classified.",
+                    "Suggested Account": "-",
+                    "Vendor Name": "Sneha Farms Private Limited",
+                    "Bill Number": "25/FATHSO4768",
+                    "Account": "Poultry and meat purchases",
+                    "Status": "Correct",
+                    "Bill Date": "2/5/2025",
+                    "Item Name": "Breast Boneless"
+                },
+                {
+                    "Bill Date": "2/5/2025",
+                    "Bill Number": "25/FATHSO4768",
+                    "Item Name": "Curry Cut Skinless without Back Bone",
+                    "Account": "Poultry and meat purchases",
+                    "Status": "Correct",
+                    "Vendor Name": "Sneha Farms Private Limited",
+                    "Suggested Account": "-",
+                    "Comment": "Item is correctly classified."
+                },
+                {
+                    "Bill Number": "25/FATHSO4768",
+                    "Comment": "Item is correctly classified.",
+                    "Vendor Name": "Sneha Farms Private Limited",
+                    "Account": "Poultry and meat purchases",
+                    "Suggested Account": "-",
+                    "Status": "Correct",
+                    "Bill Date": "2/5/2025",
+                    "Item Name": "Drumsticks skinless"
+                },
+                {
+                    "Bill Number": "25/FATHSO4768",
+                    "Status": "Correct",
+                    "Item Name": "Wings",
+                    "Bill Date": "2/5/2025",
+                    "Account": "Poultry and meat purchases",
+                    "Vendor Name": "Sneha Farms Private Limited",
+                    "Comment": "Item is correctly classified.",
+                    "Suggested Account": "-"
+                },
+                {
+                    "Comment": "Item is correctly classified.",
+                    "Bill Date": "2/5/2025",
+                    "Account": "Poultry and meat purchases",
+                    "Vendor Name": "Sneha Farms Private Limited",
+                    "Bill Number": "25/FATHSO4768",
+                    "Suggested Account": "-",
+                    "Item Name": "KEEMA",
+                    "Status": "Correct"
+                },
+                {
+                    "Bill Date": "2/5/2025",
+                    "Item Name": "Commerical_Egg",
+                    "Comment": "Item is correctly classified.",
+                    "Account": "Poultry and meat purchases",
+                    "Status": "Correct",
+                    "Bill Number": 43026818,
+                    "Suggested Account": "-",
+                    "Vendor Name": "Srinivasa Farms Private Limited"
+                },
+                {
+                    "Suggested Account": "Sea food purchases",
+                    "Vendor Name": "Punjab Fish Company",
+                    "Item Name": "crab meat",
+                    "Comment": "Crab is seafood, not poultry or red meat.",
+                    "Status": "Incorrect",
+                    "Bill Number": 1754,
+                    "Account": "Poultry and meat purchases",
+                    "Bill Date": "2/5/2025"
+                },
+                {
+                    "Comment": "Item is correctly classified.",
+                    "Bill Date": "2/5/2025",
+                    "Suggested Account": "-",
+                    "Item Name": "Boneless mutton",
+                    "Bill Number": 20545880,
+                    "Status": "Correct",
+                    "Account": "Poultry and meat purchases",
+                    "Vendor Name": "Khaja A1 Mutton Shop"
+                },
+                {
+                    "Vendor Name": "Khaja A1 Mutton Shop",
+                    "Comment": "Item is correctly classified.",
+                    "Account": "Poultry and meat purchases",
+                    "Bill Date": "2/5/2025",
+                    "Item Name": "Kheema Mutton",
+                    "Bill Number": 20545880,
+                    "Suggested Account": "-",
+                    "Status": "Correct"
+                },
+                {
+                    "Comment": "Item is correctly classified.",
+                    "Status": "Correct",
+                    "Suggested Account": "-",
+                    "Account": "Poultry and meat purchases",
+                    "Item Name": "Leg Mutton (paya)",
+                    "Bill Number": 20545880,
+                    "Vendor Name": "Khaja A1 Mutton Shop",
+                    "Bill Date": "2/5/2025"
+                },
+                {
+                    "Account": "Seafood Purchases",
+                    "Vendor Name": "Sneha Farms Private Limited",
+                    "Comment": "This is a poultry product, not seafood.",
+                    "Suggested Account": "Poultry and meat purchases",
+                    "Bill Date": "1/5/2025",
+                    "Status": "Incorrect",
+                    "Bill Number": "25/FATHSO4574",
+                    "Item Name": "Breast Boneless"
+                },
+                {
+                    "Bill Date": "1/5/2025",
+                    "Status": "Incorrect",
+                    "Bill Number": "25/FATHSO4574",
+                    "Item Name": "LEG BONELESS",
+                    "Account": "Seafood Purchases",
+                    "Comment": "This is a poultry product, not seafood.",
+                    "Suggested Account": "Poultry and meat purchases",
+                    "Vendor Name": "Sneha Farms Private Limited"
+                },
+                {
+                    "Comment": "This is a poultry product, not seafood.",
+                    "Bill Date": "1/5/2025",
+                    "Account": "Seafood Purchases",
+                    "Vendor Name": "Sneha Farms Private Limited",
+                    "Status": "Incorrect",
+                    "Item Name": "Curry Cut Skinless without Back Bone",
+                    "Bill Number": "25/FATHSO4574",
+                    "Suggested Account": "Poultry and meat purchases"
+                },
+                {
+                    "Item Name": "Drumsticks skinless",
+                    "Status": "Incorrect",
+                    "Vendor Name": "Sneha Farms Private Limited",
+                    "Comment": "This is a poultry product, not seafood.",
+                    "Account": "Seafood Purchases",
+                    "Bill Date": "1/5/2025",
+                    "Bill Number": "25/FATHSO4574",
+                    "Suggested Account": "Poultry and meat purchases"
+                },
+                {
+                    "Suggested Account": "-",
+                    "Bill Number": 1888,
+                    "Bill Date": "1/5/2025",
+                    "Comment": "Item is correctly classified.",
+                    "Vendor Name": "Raj Fisheries",
+                    "Status": "Correct",
+                    "Account": "Sea food purchases",
+                    "Item Name": "FL Marral (boneless)"
+                },
+                {
+                    "Account": "Sea food purchases",
+                    "Suggested Account": "-",
+                    "Vendor Name": "Raj Fisheries",
+                    "Item Name": "W/T Prawns",
+                    "Bill Date": "1/5/2025",
+                    "Bill Number": 1888,
+                    "Status": "Correct",
+                    "Comment": "Item is correctly classified."
+                },
+                {
+                    "Status": "Correct",
+                    "Vendor Name": "Raj Fisheries",
+                    "Suggested Account": "-",
+                    "Item Name": "Live Marral",
+                    "Bill Date": "1/5/2025",
+                    "Bill Number": 1888,
+                    "Account": "Sea food purchases",
+                    "Comment": "Item is correctly classified."
+                },
+                {
+                    "Status": "Incorrect",
+                    "Suggested Account": "Procurement expense",
+                    "Item Name": "CUTTING CHARGES",
+                    "Comment": "Cutting charges are a service cost, not a food item.",
+                    "Bill Date": "1/5/2025",
+                    "Vendor Name": "Raj Fisheries",
+                    "Bill Number": 1888,
+                    "Account": "Sea food purchases"
+                },
+                {
+                    "Vendor Name": "Punjab Fish Company",
+                    "Suggested Account": "-",
+                    "Status": "Correct",
+                    "Account": "Sea food purchases",
+                    "Bill Number": 1753,
+                    "Comment": "Item is correctly classified.",
+                    "Bill Date": "1/5/2025",
+                    "Item Name": "16 KG PRAWNS"
+                },
+                {
+                    "Status": "Correct",
+                    "Item Name": "Prawns",
+                    "Suggested Account": "-",
+                    "Vendor Name": "Punjab Fish Company",
+                    "Bill Date": "2/5/2025",
+                    "Bill Number": 1754,
+                    "Comment": "Item is correctly classified.",
+                    "Account": "Sea food purchases"
+                },
+                {
+                    "Comment": "Item is correctly classified.",
+                    "Suggested Account": "-",
+                    "Bill Date": "1/5/2025",
+                    "Item Name": "Paneer loose",
+                    "Vendor Name": "Sri Sangam Dairy Products",
+                    "Account": "Dairy products purchases",
+                    "Status": "Correct",
+                    "Bill Number": 14660
+                },
+                {
+                    "Comment": "Item is correctly classified.",
+                    "Account": "Dairy products purchases",
+                    "Bill Date": "1/5/2025",
+                    "Item Name": "SPECIAL TASTY CURD 10KG",
+                    "Vendor Name": "All Rich Dairy pvt ltd",
+                    "Bill Number": "3809/01/2526",
+                    "Status": "Correct",
+                    "Suggested Account": "-"
+                },
+                {
+                    "Vendor Name": "Upadrasta daily specialities limited",
+                    "Suggested Account": "-",
+                    "Item Name": "Suruchi Pure Ghee (FB)-LTRS",
+                    "Bill Date": "2/5/2025",
+                    "Comment": "Item is correctly classified.",
+                    "Bill Number": "104/25-26",
+                    "Status": "Correct",
+                    "Account": "Dairy products purchases"
+                },
+                {
+                    "Bill Date": "2/5/2025",
+                    "Bill Number": "104/25-26",
+                    "Vendor Name": "Upadrasta daily specialities limited",
+                    "Status": "Correct",
+                    "Account": "Dairy products purchases",
+                    "Comment": "Item is correctly classified.",
+                    "Suggested Account": "-",
+                    "Item Name": "Suruchi White Butter"
+                },
+                {
+                    "Vendor Name": "All Rich Dairy pvt ltd",
+                    "Status": "Correct",
+                    "Item Name": "SPECIAL TASTY CURD 10KG",
+                    "Bill Number": "3929/01/2526",
+                    "Suggested Account": "-",
+                    "Comment": "Item is correctly classified.",
+                    "Account": "Dairy products purchases",
+                    "Bill Date": "2/5/2025"
+                },
+                {
+                    "Vendor Name": "Sri Sangam Dairy Products",
+                    "Account": "Dairy products purchases",
+                    "Comment": "Item is correctly classified.",
+                    "Item Name": "Paneer loose",
+                    "Bill Date": "2/5/2025",
+                    "Status": "Correct",
+                    "Suggested Account": "-",
+                    "Bill Number": 14670
+                },
+                {
+                    "Suggested Account": "-",
+                    "Bill Date": "1/5/2025",
+                    "Comment": "Item is correctly classified.",
+                    "Status": "Correct",
+                    "Vendor Name": "Shree Kesar Trading co",
+                    "Item Name": "HAMALI (OUT WARD)",
+                    "Bill Number": 775,
+                    "Account": "Other admin charges"
+                },
+                {
+                    "Bill Number": 775,
+                    "Vendor Name": "Shree Kesar Trading co",
+                    "Suggested Account": "-",
+                    "Item Name": "Freight",
+                    "Comment": "Item is correctly classified.",
+                    "Account": "Transport and fuel expense",
+                    "Status": "Correct",
+                    "Bill Date": "1/5/2025"
+                },
+                {
+                    "Bill Number": 674,
+                    "Account": "Beverages",
+                    "Bill Date": "1/5/2025",
+                    "Comment": "Item is correctly classified.",
+                    "Vendor Name": "BKN Enterprises",
+                    "Item Name": "Bisleri 500ml",
+                    "Status": "Correct",
+                    "Suggested Account": "-"
+                },
+                {
+                    "Bill Number": 10,
+                    "Vendor Name": "Taj Coal Depot",
+                    "Account": "Other purchases",
+                    "Bill Date": "2/5/2025",
+                    "Comment": "Item is correctly classified.",
+                    "Suggested Account": "-",
+                    "Status": "Correct",
+                    "Item Name": "Char coal"
+                }
+            ]
+        };
+
+// Your required column order
+const headers = [
+    "Bill Date",
+    "Bill Number",
+    "Item Name",
+    "Vendor Name",
+    "Account",
+    "Status",
+    "Suggested Account",
+    "Comment"
+];
+
+const thead = document.querySelector("#jsonTable thead");
+
+// Render table header with filter inputs
+const filterRow = document.createElement('tr');
+const headerRow = document.createElement('tr');
+headers.forEach((key, idx) => {
+    // Filter input
+    const filterTh = document.createElement('th');
+    const input = document.createElement('input');
+    input.className = 'filter-input';
+    input.setAttribute('type', 'text');
+    input.setAttribute('placeholder', `Filter ${key}`);
+    input.setAttribute('data-index', idx);
+    input.addEventListener('input', filterTable);
+    filterTh.appendChild(input);
+    filterRow.appendChild(filterTh);
+    // Header
+    const th = document.createElement('th');
+    th.textContent = key;
+    headerRow.appendChild(th);
+});
+thead.appendChild(filterRow);
+thead.appendChild(headerRow);
+
+// Render table body function
+const tbody = document.querySelector("#jsonTable tbody");
+
+function renderTable(filteredData) {
+    tbody.innerHTML = '';
+    filteredData.forEach(row => {
+        const tr = document.createElement('tr');
+        headers.forEach(key => {
+            const td = document.createElement('td');
+            td.textContent = row[key] !== undefined ? row[key] : '';
+            tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+    });
+}
+
+// Filter function
+function filterTable() {
+    const filterInputs = document.querySelectorAll('.filter-input');
+    let filtered = data.output.filter(row =>
+        headers.every((key, i) => {
+            const val = String(row[key] !== undefined ? row[key] : '').toLowerCase();
+            const filterVal = filterInputs[i].value.toLowerCase();
+            return !filterVal || val.includes(filterVal);
+        })
+    );
+    renderTable(filtered);
+}
+
+// Initial render
+renderTable(data.output);
+</script>
+
+</body>
+</html>
